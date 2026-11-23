@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "carpet-yhaddition",
+  "version": "${version}",
+
+  "name": "carpet-YHaddition",
+  "description": "A lightweight Carpet extension: one-click fake player spawning (/bot), legacy water bucket placement, and an update-skip preview for nether portal carving.",
+  "authors": [
+    "YH"
+  ],
+  "license": "MIT",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.yh.carpet.YHAdditionMod"
+    ],
+    "client": [
+      "com.yh.carpet.client.YHAdditionClient"
+    ]
+  },
+
+  "mixins": [
+    "carpet-yhaddition.mixins.json"
+  ],
+
+  "depends": {
+    "minecraft": ">=1.21.11 <1.22",
+    "fabricloader": ">=0.18.3",
+    "fabric-api": "*",
+    "carpet": ">=1.4.194"
+  }
+}

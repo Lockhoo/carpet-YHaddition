@@ -1,0 +1,55 @@
+plugins {
+    id 'fabric-loom' version "${loom_version}"
+}
+
+base {
+    archivesName = project.archives_base_name
+}
+
+version = project.mod_version
+group = project.maven_group
+
+loom {
+    // This extension intentionally ships no mixins and no access widener.
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://maven.fabricmc.net/' }
+}
+
+dependencies {
+    // To change the versions see the gradle.properties file
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings loom.officialMojangMappings()
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+    // Carpet 26.2 (the jar installed in the game's mods folder), compile time only.
+    // The real classes are provided at runtime by the carpet mod itself.
+    modCompileOnly files('libs/fabric-carpet-1.21.11.jar')
+
+    // Fabric API modules used by the client preview and networking, compile time only.
+    // (fabric-api ships these as nested jars; the fabric-api mod provides them at runtime.)
+    modCompileOnly fileTree(dir: 'libs/fabric-api', include: '*.jar')
+
+    // Mixin (1.21.x needs it explicitly; 26.x shipped it through the modern loom plugin)
+    compileOnly "net.fabricmc:sponge-mixin:0.16.5+mixin.0.8.7"
+}
+
+processResources {
+    inputs.property "version", project.version
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = "UTF-8"
+    it.options.release = 21
+}
+
+java {
+    withSourcesJar()
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
